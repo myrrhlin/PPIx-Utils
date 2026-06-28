@@ -383,8 +383,9 @@ sub is_hash_key {
     return undef if !$parent;
     my $grandparent = $parent->parent();
     return undef if !$grandparent;
-    return 1 if $grandparent->isa('PPI::Structure::Subscript');
-
+    if ($grandparent->isa('PPI::Structure::Subscript')) {
+        return $grandparent->start eq '{' ? 1 : undef;
+    }
 
     #Check declarative style: %hash = (foo => bar);
     my $sib = $elem->snext_sibling();
